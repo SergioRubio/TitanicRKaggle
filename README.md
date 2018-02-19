@@ -20,6 +20,12 @@ knitr::opts_chunk$set(echo = TRUE)
     
 2. [Data understanding](#data_understanding)
 
+3. [Modeling](#modeling)
+
+4. [Evaluation](#evaluation)
+
+5. [Conclusions](#conclusions)
+
 
 # Introduction <a name="introduction"></a> #
 
@@ -118,3 +124,11 @@ We also include **gender_submission.csv**, a set of predictions that assume all 
     
     
 # Data understanding <a name="data_understanding"></a> #
+
+# Data preparation <a name="data_preparation"></a> #
+
+# Modeling <a name="modeling"></a> #
+
+# Evaluation <a name="evaluation"></a> #
+
+# Conclusions <a name="conclusions"></a> #
