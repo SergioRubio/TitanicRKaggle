@@ -13,7 +13,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 # Introduction #
 
-[Titanic: Machine Learning from Disaster - Kaggle competition (R)](https://www.kaggle.com/c/titanic)
+[Titanic: Machine Learning from Disaster - Kaggle](https://www.kaggle.com/c/titanic)
 
 ## Context ##
 
