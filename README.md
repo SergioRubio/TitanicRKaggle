@@ -6,19 +6,25 @@ output: html_document
 ---
 
 <!---
-```{r setup, include=FALSE}
+```{r setup, include = FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 --->
 
 # Table of contents #
+
 1. [Introduction](#introduction)
     1. [Context](#context)
     2. [Challenge](#challenge)
     3. [Evaluation](#evaluation)
     4. [Data](#data)
+    5. [Packages](#packages)
     
 2. [Data understanding](#data_understanding)
+    1. [Importing data](#importing_data)
+    2. [Checking data](#checking_data)
+    3. [Describing data](#describing_data)
+    
 
 3. [Modeling](#modeling)
 
@@ -30,6 +36,8 @@ knitr::opts_chunk$set(echo = TRUE)
 # 1. Introduction <a name="introduction"></a> #
 
 [**Titanic: Machine Learning from Disaster - Kaggle**](https://www.kaggle.com/c/titanic)
+
+The first step of every data project is to have a **clear understanding of the problem** we are trying to solve. In this section we describe the **goal** of the competition and its **rules** and briefly describe the available data.
 
 ## 1.1. Context <a name="context"></a> ##
 
@@ -126,8 +134,65 @@ The **gender_submission.csv** file is a set of predictions that assume all and o
     * Parent = mother, father
     * Child = daughter, son, stepdaughter, stepson (Some children travelled only with a nanny, therefore parch=0 for them).
     
+## 1.5. Packages <a name="packages"></a> ##
+
+We need to use several **R packages** for data manipulation, visualization, modeling, etc.
+    
+```{r message = FALSE, warning = FALSE}
+# Load packages
+
+library('dplyr') # Data manipulation
+library('ggplot2') # Visualization
+```
     
 # 2. Data understanding <a name="data_understanding"></a> #
+
+The second step is to **know the details of the data** we have available to solve the problem. In this section we **load** the datasets, we **check consistency** and we **describe** them in detail. 
+
+## 2.1. Importing data <a name="importing_data"></a> ##
+
+```{r}
+# Load train and test set preventing R to cast strings as factors
+
+train <- read.csv('./data/train.csv', stringsAsFactors=FALSE)
+test <- read.csv('./data/test.csv', stringsAsFactors=FALSE)
+
+# Add type of set as a column
+
+train$set <- "train"
+test$set <- "test"
+
+# Combine train and test sets. "Survived" is filled with NA for the test set
+
+test$Survived <- NA
+full <- rbind(train, test)
+```
+
+## 2.2. Checking data <a name="checking_data"></a> ##
+
+```{r}
+# Check dimensions of imported sets
+
+dim(train)
+dim(test)
+dim(full)
+```
+
+```{r}
+# Structure of the full set
+
+str(full)
+head(full)
+```
+
+```{r}
+
+```
+
+
+## 2.3. Describing data <a name="describing_data"></a> ##
+
+
 
 # 3. Data preparation <a name="data_preparation"></a> #
 

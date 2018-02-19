@@ -138,8 +138,14 @@ $(document).ready(function () {
 <li><a href="#challenge">Challenge</a></li>
 <li><a href="#evaluation">Evaluation</a></li>
 <li><a href="#data">Data</a></li>
+<li><a href="#packages">Packages</a></li>
 </ol></li>
-<li><p><a href="#data_understanding">Data understanding</a></p></li>
+<li><a href="#data_understanding">Data understanding</a>
+<ol style="list-style-type: decimal">
+<li><a href="#importing_data">Importing data</a></li>
+<li><a href="#checking_data">Checking data</a></li>
+<li><a href="#describing_data">Describing data</a></li>
+</ol></li>
 <li><p><a href="#modeling">Modeling</a></p></li>
 <li><p><a href="#evaluation">Evaluation</a></p></li>
 <li><p><a href="#conclusions">Conclusions</a></p></li>
@@ -148,6 +154,7 @@ $(document).ready(function () {
 <div id="introduction" class="section level1">
 <h1>1. Introduction <a name="introduction"></a></h1>
 <p><a href="https://www.kaggle.com/c/titanic"><strong>Titanic: Machine Learning from Disaster - Kaggle</strong></a></p>
+<p>The first step of every data project is to have a <strong>clear understanding of the problem</strong> we are trying to solve. In this section we describe the <strong>goal</strong> of the competition and its <strong>rules</strong> and briefly describe the available data.</p>
 <div id="context" class="section level2">
 <h2>1.1. Context <a name="context"></a></h2>
 <div class="figure">
@@ -256,9 +263,88 @@ $(document).ready(function () {
 </ul>
 </div>
 </div>
+<div id="packages" class="section level2">
+<h2>1.5. Packages <a name="packages"></a></h2>
+<p>We need to use several <strong>R packages</strong> for data manipulation, visualization, modeling, etc.</p>
+<pre class="r"><code># Load packages
+
+library('dplyr') # Data manipulation
+library('ggplot2') # Visualization</code></pre>
+</div>
 </div>
 <div id="data-understanding" class="section level1">
 <h1>2. Data understanding <a name="data_understanding"></a></h1>
+<p>The second step is to <strong>know the details of the data</strong> we have available to solve the problem. In this section we <strong>load</strong> the datasets, we <strong>check consistency</strong> and we <strong>describe</strong> them in detail.</p>
+<div id="importing-data" class="section level2">
+<h2>2.1. Importing data <a name="importing_data"></a></h2>
+<pre class="r"><code># Load train and test set preventing R to cast strings as factors
+
+train &lt;- read.csv('./data/train.csv', stringsAsFactors=FALSE)
+test &lt;- read.csv('./data/test.csv', stringsAsFactors=FALSE)
+
+# Add type of set as a column
+
+train$set &lt;- &quot;train&quot;
+test$set &lt;- &quot;test&quot;
+
+# Combine train and test sets. &quot;Survived&quot; is filled with NA for the test set
+
+test$Survived &lt;- NA
+full &lt;- rbind(train, test)</code></pre>
+</div>
+<div id="checking-data" class="section level2">
+<h2>2.2. Checking data <a name="checking_data"></a></h2>
+<pre class="r"><code># Check dimensions of imported sets
+
+dim(train)</code></pre>
+<pre><code>## [1] 891  13</code></pre>
+<pre class="r"><code>dim(test)</code></pre>
+<pre><code>## [1] 418  13</code></pre>
+<pre class="r"><code>dim(full)</code></pre>
+<pre><code>## [1] 1309   13</code></pre>
+<pre class="r"><code># Structure of the full set
+
+str(full)</code></pre>
+<pre><code>## 'data.frame':    1309 obs. of  13 variables:
+##  $ PassengerId: int  1 2 3 4 5 6 7 8 9 10 ...
+##  $ Survived   : int  0 1 1 1 0 0 0 0 1 1 ...
+##  $ Pclass     : int  3 1 3 1 3 3 1 3 3 2 ...
+##  $ Name       : chr  &quot;Braund, Mr. Owen Harris&quot; &quot;Cumings, Mrs. John Bradley (Florence Briggs Thayer)&quot; &quot;Heikkinen, Miss. Laina&quot; &quot;Futrelle, Mrs. Jacques Heath (Lily May Peel)&quot; ...
+##  $ Sex        : chr  &quot;male&quot; &quot;female&quot; &quot;female&quot; &quot;female&quot; ...
+##  $ Age        : num  22 38 26 35 35 NA 54 2 27 14 ...
+##  $ SibSp      : int  1 1 0 1 0 0 0 3 0 1 ...
+##  $ Parch      : int  0 0 0 0 0 0 0 1 2 0 ...
+##  $ Ticket     : chr  &quot;A/5 21171&quot; &quot;PC 17599&quot; &quot;STON/O2. 3101282&quot; &quot;113803&quot; ...
+##  $ Fare       : num  7.25 71.28 7.92 53.1 8.05 ...
+##  $ Cabin      : chr  &quot;&quot; &quot;C85&quot; &quot;&quot; &quot;C123&quot; ...
+##  $ Embarked   : chr  &quot;S&quot; &quot;C&quot; &quot;S&quot; &quot;S&quot; ...
+##  $ set        : chr  &quot;train&quot; &quot;train&quot; &quot;train&quot; &quot;train&quot; ...</code></pre>
+<pre class="r"><code>head(full)</code></pre>
+<pre><code>##   PassengerId Survived Pclass
+## 1           1        0      3
+## 2           2        1      1
+## 3           3        1      3
+## 4           4        1      1
+## 5           5        0      3
+## 6           6        0      3
+##                                                  Name    Sex Age SibSp
+## 1                             Braund, Mr. Owen Harris   male  22     1
+## 2 Cumings, Mrs. John Bradley (Florence Briggs Thayer) female  38     1
+## 3                              Heikkinen, Miss. Laina female  26     0
+## 4        Futrelle, Mrs. Jacques Heath (Lily May Peel) female  35     1
+## 5                            Allen, Mr. William Henry   male  35     0
+## 6                                    Moran, Mr. James   male  NA     0
+##   Parch           Ticket    Fare Cabin Embarked   set
+## 1     0        A/5 21171  7.2500              S train
+## 2     0         PC 17599 71.2833   C85        C train
+## 3     0 STON/O2. 3101282  7.9250              S train
+## 4     0           113803 53.1000  C123        S train
+## 5     0           373450  8.0500              S train
+## 6     0           330877  8.4583              Q train</code></pre>
+</div>
+<div id="describing-data" class="section level2">
+<h2>2.3. Describing data <a name="describing_data"></a></h2>
+</div>
 </div>
 <div id="data-preparation" class="section level1">
 <h1>3. Data preparation <a name="data_preparation"></a></h1>
