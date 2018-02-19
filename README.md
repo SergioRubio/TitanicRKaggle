@@ -27,47 +27,47 @@ knitr::opts_chunk$set(echo = TRUE)
 5. [Conclusions](#conclusions)
 
 
-# Introduction <a name="introduction"></a> #
+# 1. Introduction <a name="introduction"></a> #
 
-[Titanic: Machine Learning from Disaster - Kaggle](https://www.kaggle.com/c/titanic)
+[**Titanic: Machine Learning from Disaster - Kaggle**](https://www.kaggle.com/c/titanic)
 
-## Context <a name="context"></a> ##
+## 1.1. Context <a name="context"></a> ##
 
-![](http://www.ssmaritime.com/000-Titanic-Starboard-Ilust-xlge.jpg)
+![](./images/RMS_Titanic.png "RMS Titanic")
 
 _The sinking of the **RMS Titanic** is one of the most infamous shipwrecks in history.  On **April 15, 1912**, during her maiden voyage, the Titanic sank after colliding with an iceberg, **killing 1.502 out of 2.224 passengers and crew**. This sensational tragedy shocked the international community and led to better safety regulations for ships._
 
 _One of the reasons that the shipwreck led to such loss of life was that there were not enough lifeboats for the passengers and crew. Although there was some element of luck involved in surviving the sinking, **some groups of people were more likely to survive than others**, such as women, children, and the upper-class._
 
+[Sinking of the RMS _Titanic_ - Wikipedia](https://en.wikipedia.org/wiki/Sinking_of_the_RMS_Titanic)
+
 [Titanic sinking - National Geographic](https://www.youtube.com/watch?v=9xoqXVjBEF8)
 
-## Challenge <a name="challenge"></a> ##
+## 1.2. Challenge <a name="challenge"></a> ##
 
-The goal of this competition is to complete the analysis of what sorts of people were likely to survive. In particular, to apply the tools of machine learning to **predict which passengers survived the tragedy**.
+The goal of this competition is to complete the analysis of what sorts of people were likely to survive the sinking. In particular, to apply the tools of machine learning to **predict which passengers survived the tragedy**.
 
-This is a **classification problem**, specifically, a **binary classification problem**, because there are only two different states we are classifying.
+This is a **classification** problem, specifically, a [binary classification](https://en.wikipedia.org/wiki/Binary_classification) problem, because there are only two different states we are classifying.
 
-[Binary classification - Wikipedia](https://en.wikipedia.org/wiki/Binary_classification)
-
-## Evaluation <a name="evaluation"></a> ##
+## 1.3. Evaluation <a name="evaluation"></a> ##
 
 ### Goal ###
 
-It is your job to predict if a passenger survived the sinking of the Titanic or not.
-For each PassengerId in the test set, you must predict a 0 or 1 value for the Survived variable.
+The goal is to **predict if a passenger survived the sinking of the Titanic or not**.
+For each PassengerId in the test set, the model must predict a 0 or 1 value for the Survived variable.
 
 ### Metric ###
 
-Your score is the percentage of passengers you correctly predict. This is known simply as "accuracy”.
+The score is the **percentage of passengers correctly predicted**. This is known simply as "accuracy”.
 
 ### Submission File Format ###
 
-You should submit a csv file with exactly 418 entries plus a header row. Your submission will show an error if you have extra columns (beyond PassengerId and Survived) or rows.
+The submission file should be a **csv** file with exactly **418 entries** plus a header row. Submission will show an error if the file has extra columns (beyond PassengerId and Survived) or rows.
 
 The file should have exactly 2 columns:
 
-* PassengerId (sorted in any order)
-* Survived (contains your binary predictions: 1 for survived, 0 for deceased)
+* **PassengerId** (sorted in any order)
+* **Survived** (contains your binary predictions: 1 for survived, 0 for deceased)
 
 
 ```
@@ -78,20 +78,24 @@ PassengerId,Survived
  Etc.
 ```
 
-## Data <a name="data"></a> ##
+## 1.4. Data <a name="data"></a> ##
 
 ### Overview ###
 
 The data has been split into two groups:
 
-* training set (train.csv)
-* test set (test.csv)
+* **Training set** (train.csv)
+* **Test set** (test.csv)
 
-**The training set** should be used to build your machine learning models. For the training set, we provide the outcome (also known as the “ground truth”) for each passenger. Your model will be based on “features” like passengers’ gender and class. You can also use [feature engineering](https://triangleinequality.wordpress.com/2013/09/08/basic-feature-engineering-with-the-titanic-data/) to create new features.
+The **training set** should be used to build the machine learning models. For the training set, each passenger has an outcome (also known as the “ground truth”). The model will be based on “features” like passengers’ gender and class. It is possible to create **new features** using [feature engineering](https://triangleinequality.wordpress.com/2013/09/08/basic-feature-engineering-with-the-titanic-data/).
 
-**The test set** should be used to see how well your model performs on unseen data. For the test set, we do not provide the ground truth for each passenger. It is your job to predict these outcomes. For each passenger in the test set, use the model you trained to predict whether or not they survived the sinking of the Titanic.
+![](./images/Training_set.png "Training set")
 
-We also include **gender_submission.csv**, a set of predictions that assume all and only female passengers survive, as an example of what a submission file should look like.
+The **test set** should be used to see how well the model performs on unseen data. For the test set, the ground truth for each passenger is not provided. The goal is to **predict**, for each passenger in the test set, whether or not they survived the sinking of the Titanic.
+
+![](./images/Testing_set.png "Testing set")
+
+The **gender_submission.csv** file is a set of predictions that assume all and only female passengers survive, as an example of what a submission file should look like.
 
 ### Data dictionary ###
 
@@ -123,12 +127,12 @@ We also include **gender_submission.csv**, a set of predictions that assume all 
     * Child = daughter, son, stepdaughter, stepson (Some children travelled only with a nanny, therefore parch=0 for them).
     
     
-# Data understanding <a name="data_understanding"></a> #
+# 2. Data understanding <a name="data_understanding"></a> #
 
-# Data preparation <a name="data_preparation"></a> #
+# 3. Data preparation <a name="data_preparation"></a> #
 
-# Modeling <a name="modeling"></a> #
+# 4. Modeling <a name="modeling"></a> #
 
-# Evaluation <a name="evaluation"></a> #
+# 5. Evaluation <a name="evaluation"></a> #
 
-# Conclusions <a name="conclusions"></a> #
+# 6. Conclusions <a name="conclusions"></a> #
