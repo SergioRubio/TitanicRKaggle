@@ -296,12 +296,10 @@ full &lt;- rbind(train, test)</code></pre>
 <h2>2.2. Checking data <a name="checking_data"></a></h2>
 <pre class="r"><code># Check dimensions of imported sets
 
-dim(train)</code></pre>
-<pre><code>## [1] 891  13</code></pre>
-<pre class="r"><code>dim(test)</code></pre>
-<pre><code>## [1] 418  13</code></pre>
-<pre class="r"><code>dim(full)</code></pre>
-<pre><code>## [1] 1309   13</code></pre>
+dim(train)
+dim(test)
+dim(full)</code></pre>
+<p>We confirm that the train set has <strong>891 observations</strong> and the test set has <strong>418 observation</strong> for a total of <strong>1309 observations</strong> as expected.</p>
 <pre class="r"><code># Structure of the full set
 
 str(full)</code></pre>

@@ -170,13 +170,16 @@ full <- rbind(train, test)
 
 ## 2.2. Checking data <a name="checking_data"></a> ##
 
-```{r}
+```{r results='hide', message = FALSE, warning = FALSE}
 # Check dimensions of imported sets
 
 dim(train)
 dim(test)
 dim(full)
 ```
+
+We confirm that the train set has **891 observations** and the test set has **418 observation** for a total of **1309 observations** as expected.
+
 
 ```{r}
 # Structure of the full set
