@@ -11,11 +11,21 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 --->
 
-# Introduction #
+# Table of contents #
+1. [Introduction](#introduction)
+    1. [Context](#context)
+    2. [Challenge](#challenge)
+    3. [Evaluation](#evaluation)
+    4. [Data](#data)
+    
+2. [Data understanding](#data_understanding)
+
+
+# Introduction <a name="introduction"></a> #
 
 [Titanic: Machine Learning from Disaster - Kaggle](https://www.kaggle.com/c/titanic)
 
-## Context ##
+## Context <a name="context"></a> ##
 
 ![](http://www.ssmaritime.com/000-Titanic-Starboard-Ilust-xlge.jpg)
 
@@ -25,7 +35,7 @@ _One of the reasons that the shipwreck led to such loss of life was that there w
 
 [Titanic sinking - National Geographic](https://www.youtube.com/watch?v=9xoqXVjBEF8)
 
-## Challenge ##
+## Challenge <a name="challenge"></a> ##
 
 The goal of this competition is to complete the analysis of what sorts of people were likely to survive. In particular, to apply the tools of machine learning to **predict which passengers survived the tragedy**.
 
@@ -33,7 +43,7 @@ This is a **classification problem**, specifically, a **binary classification pr
 
 [Binary classification - Wikipedia](https://en.wikipedia.org/wiki/Binary_classification)
 
-## Evaluation ##
+## Evaluation <a name="evaluation"></a> ##
 
 ### Goal ###
 
@@ -62,7 +72,7 @@ PassengerId,Survived
  Etc.
 ```
 
-## Data ##
+## Data <a name="data"></a> ##
 
 ### Overview ###
 
@@ -106,4 +116,5 @@ We also include **gender_submission.csv**, a set of predictions that assume all 
     * Parent = mother, father
     * Child = daughter, son, stepdaughter, stepson (Some children travelled only with a nanny, therefore parch=0 for them).
     
-
+    
+# Data understanding <a name="data_understanding"></a> #
