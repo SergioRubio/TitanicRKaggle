@@ -11,31 +11,40 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 --->
 
-## Description
+# Introduction #
+
+[Titanic: Machine Learning from Disaster - Kaggle competition (R)](https://www.kaggle.com/c/titanic)
+
+## Context ##
 
 ![](http://www.ssmaritime.com/000-Titanic-Starboard-Ilust-xlge.jpg)
 
-The sinking of the **RMS Titanic** is one of the most infamous shipwrecks in history.  On **April 15, 1912**, during her maiden voyage, the Titanic sank after colliding with an iceberg, **killing 1.502 out of 2.224 passengers and crew**. This sensational tragedy shocked the international community and led to better safety regulations for ships.
+_The sinking of the **RMS Titanic** is one of the most infamous shipwrecks in history.  On **April 15, 1912**, during her maiden voyage, the Titanic sank after colliding with an iceberg, **killing 1.502 out of 2.224 passengers and crew**. This sensational tragedy shocked the international community and led to better safety regulations for ships._
 
-One of the reasons that the shipwreck led to such loss of life was that there were not enough lifeboats for the passengers and crew. Although there was some element of luck involved in surviving the sinking, **some groups of people were more likely to survive than others**, such as women, children, and the upper-class.
-
-In this challenge, we ask you to complete the analysis of what sorts of people were likely to survive. In particular, we ask you to apply the tools of machine learning to **predict which passengers survived the tragedy**.
+_One of the reasons that the shipwreck led to such loss of life was that there were not enough lifeboats for the passengers and crew. Although there was some element of luck involved in surviving the sinking, **some groups of people were more likely to survive than others**, such as women, children, and the upper-class._
 
 [Titanic sinking - National Geographic](https://www.youtube.com/watch?v=9xoqXVjBEF8)
 
+## Challenge ##
 
-## Evaluation
+The goal of this competition is to complete the analysis of what sorts of people were likely to survive. In particular, to apply the tools of machine learning to **predict which passengers survived the tragedy**.
 
-### Goal
+This is a **classification problem**, specifically, a **binary classification problem**, because there are only two different states we are classifying.
+
+[Binary classification - Wikipedia](https://en.wikipedia.org/wiki/Binary_classification)
+
+## Evaluation ##
+
+### Goal ###
 
 It is your job to predict if a passenger survived the sinking of the Titanic or not.
 For each PassengerId in the test set, you must predict a 0 or 1 value for the Survived variable.
 
-### Metric
+### Metric ###
 
 Your score is the percentage of passengers you correctly predict. This is known simply as "accuracy”.
 
-### Submission File Format
+### Submission File Format ###
 
 You should submit a csv file with exactly 418 entries plus a header row. Your submission will show an error if you have extra columns (beyond PassengerId and Survived) or rows.
 
@@ -53,9 +62,9 @@ PassengerId,Survived
  Etc.
 ```
 
-## Data
+## Data ##
 
-### Overview
+### Overview ###
 
 The data has been split into two groups:
 
@@ -68,7 +77,7 @@ The data has been split into two groups:
 
 We also include **gender_submission.csv**, a set of predictions that assume all and only female passengers survive, as an example of what a submission file should look like.
 
-### Data dictionary
+### Data dictionary ###
 
 **Variable**: Definition - Key
 
@@ -83,7 +92,7 @@ We also include **gender_submission.csv**, a set of predictions that assume all 
 * **cabin**: Cabin number 	
 * **embarked**: Port of Embarkation - (C = Cherbourg, Q = Queenstown, S = Southampton)
 
-### Variable notes
+### Variable notes ###
 
 * **pclass**: A proxy for socio-economic status (SES)
     * 1st = Upper
@@ -93,6 +102,8 @@ We also include **gender_submission.csv**, a set of predictions that assume all 
 * **sibsp**: The dataset defines family relations in this way...
     * Sibling = brother, sister, stepbrother, stepsister
     * Spouse = husband, wife (mistresses and fiancés were ignored)
-**parch**: The dataset defines family relations in this way...
+* **parch**: The dataset defines family relations in this way...
     * Parent = mother, father
     * Child = daughter, son, stepdaughter, stepson (Some children travelled only with a nanny, therefore parch=0 for them).
+    
+
