@@ -25,12 +25,13 @@ knitr::opts_chunk$set(echo = TRUE)
     2. [Checking data](#checking_data)
     3. [Describing data](#describing_data)
     
+3. [Data preparation](#data_preparation)
 
-3. [Modeling](#modeling)
+4. [Modeling](#modeling)
 
-4. [Evaluation](#evaluation)
+5. [Evaluation](#evaluation)
 
-5. [Conclusions](#conclusions)
+6. [Conclusions](#conclusions)
 
 
 # 1. Introduction <a name="introduction"></a> #
@@ -159,8 +160,8 @@ test <- read.csv('./data/test.csv', stringsAsFactors=FALSE)
 
 # Add type of set as a column
 
-train$set <- "train"
-test$set <- "test"
+train$Set <- "train"
+test$Set <- "test"
 
 # Combine train and test sets. "Survived" is filled with NA for the test set
 
@@ -168,7 +169,11 @@ test$Survived <- NA
 full <- rbind(train, test)
 ```
 
+We combine the data from both the train and test set because, when performing **feature engineering**, it's useful to know the **full range of possible values** and the **distributions of all known values**. We added column `Set` to keep track of the training and test data.
+
 ## 2.2. Checking data <a name="checking_data"></a> ##
+
+### Dimensions ###
 
 ```{r results='hide', message = FALSE, warning = FALSE}
 # Check dimensions of imported sets
@@ -180,20 +185,56 @@ dim(full)
 
 We confirm that the train set has **891 observations** and the test set has **418 observation** for a total of **1309 observations** as expected.
 
+### Factors ###
+
+We have to check if all the **categorical variables** are correctly set to [factors](https://www.stat.berkeley.edu/classes/s133/factors.html). 
 
 ```{r}
 # Structure of the full set
 
 str(full)
-head(full)
 ```
+
+Because we imported the datasets with the `stringsAsFactors` parameter set to `FALSE`, we need to convert `Sex`, `Embarked` and `Set` variables **from string to factor**. We also convert `Survived` and `Pclass` variables **from int to factor**.
 
 ```{r}
+# Cast variables to factor
 
+full$Survived <- as.factor(full$Survived)
+full$Pclass <- as.factor(full$Pclass)
+full$Sex <- as.factor(full$Sex)
+full$Embarked <- as.factor(full$Embarked)
+full$Set <- as.factor(full$Set)
 ```
 
+```{r echo = FALSE}
+# Cast variables to factor
+
+test$Survived <- as.factor(test$Survived)
+test$Pclass <- as.factor(test$Pclass)
+test$Sex <- as.factor(test$Sex)
+test$Embarked <- as.factor(test$Embarked)
+test$Set <- as.factor(test$Set)
+
+train$Survived <- as.factor(train$Survived)
+train$Pclass <- as.factor(train$Pclass)
+train$Sex <- as.factor(train$Sex)
+train$Embarked <- as.factor(train$Embarked)
+train$Set <- as.factor(train$Set)
+```
+
+### Missing values ###
+
+```{r}
+# Summary of the full set
+
+summary(full)
+```
 
 ## 2.3. Describing data <a name="describing_data"></a> ##
+
+
+
 
 
 
