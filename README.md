@@ -251,7 +251,17 @@ When dealing with missing data it is important to **understand why they are miss
 
 ![](./images/Titanic_cabins.png "Titanic cabins")
 
+Because of the high percentage of observations without an informed cabin, we can't just assign the most common cabins to missing values or throw them put. One solution is to **assign a value that indicates a missing**, because the fact that the value is missing can be **useful information** in and of itself.
 
+```{r}
+# Assign "Unknown" value to missing cabins
+
+full$Cabin[full$Cabin == ""] <- "Unknown"
+train$Cabin[train$Cabin == ""] <- "Unknown"
+test$Cabin[test$Cabin == ""] <- "Unknown"
+```
+
+* **Age**: Variable `Age` has a relative high percentage of missings. 
 
 
 
