@@ -328,11 +328,17 @@ str(full)</code></pre>
 <p>Because we imported the datasets with the <code>stringsAsFactors</code> parameter set to <code>FALSE</code>, we need to convert <code>Sex</code>, <code>Embarked</code> and <code>Set</code> variables <strong>from string to factor</strong>. We also convert <code>Survived</code> and <code>Pclass</code> variables <strong>from int to factor</strong>.</p>
 <pre class="r"><code># Cast variables to factor
 
-full$Survived &lt;- as.factor(full$Survived)
-full$Pclass &lt;- as.factor(full$Pclass)
-full$Sex &lt;- as.factor(full$Sex)
-full$Embarked &lt;- as.factor(full$Embarked)
-full$Set &lt;- as.factor(full$Set)</code></pre>
+factorize &lt;- function(set, columns_to_factor) {
+    set_factor &lt;- set
+    set_factor[columns_to_factor] &lt;- lapply(select(set, one_of(columns_to_factor)), factor)
+    return(set_factor)
+}
+
+columns_to_factor &lt;- c(&quot;Survived&quot;, &quot;Pclass&quot;, &quot;Sex&quot;, &quot;Embarked&quot;, &quot;Set&quot;)
+
+full &lt;- factorize(full, columns_to_factor)
+train &lt;- factorize(train, columns_to_factor)
+test &lt;- factorize(test, columns_to_factor)</code></pre>
 </div>
 <div id="missing-values" class="section level3">
 <h3>Missing values</h3>

@@ -200,27 +200,17 @@ Because we imported the datasets with the `stringsAsFactors` parameter set to `F
 ```{r}
 # Cast variables to factor
 
-full$Survived <- as.factor(full$Survived)
-full$Pclass <- as.factor(full$Pclass)
-full$Sex <- as.factor(full$Sex)
-full$Embarked <- as.factor(full$Embarked)
-full$Set <- as.factor(full$Set)
-```
+factorize <- function(set, columns_to_factor) {
+    set_factor <- set
+    set_factor[columns_to_factor] <- lapply(select(set, one_of(columns_to_factor)), factor)
+    return(set_factor)
+}
 
-```{r echo = FALSE}
-# Cast variables to factor
+columns_to_factor <- c("Survived", "Pclass", "Sex", "Embarked", "Set")
 
-test$Survived <- as.factor(test$Survived)
-test$Pclass <- as.factor(test$Pclass)
-test$Sex <- as.factor(test$Sex)
-test$Embarked <- as.factor(test$Embarked)
-test$Set <- as.factor(test$Set)
-
-train$Survived <- as.factor(train$Survived)
-train$Pclass <- as.factor(train$Pclass)
-train$Sex <- as.factor(train$Sex)
-train$Embarked <- as.factor(train$Embarked)
-train$Set <- as.factor(train$Set)
+full <- factorize(full, columns_to_factor)
+train <- factorize(train, columns_to_factor)
+test <- factorize(test, columns_to_factor)
 ```
 
 ### Missing values ###
