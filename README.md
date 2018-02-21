@@ -5,11 +5,6 @@ date: "February 16, 2018"
 output: html_document
 ---
 
-<!---
-```{r setup, include = FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
---->
 
 # Table of contents #
 
@@ -144,6 +139,7 @@ We need to use several **R packages** for data manipulation, visualization, mode
 
 library('dplyr') # Data manipulation
 library('ggplot2') # Visualization
+library('mice') # Missing values
 ```
     
 # 2. Data understanding <a name="data_understanding"></a> #
@@ -175,7 +171,7 @@ We combine the data from both the train and test set because, when performing **
 
 ### Dimensions ###
 
-```{r results='hide', message = FALSE, warning = FALSE}
+```{r results = 'hide', message = FALSE, warning = FALSE}
 # Check dimensions of imported sets
 
 dim(train)
@@ -257,13 +253,74 @@ Because of the high percentage of observations without an informed cabin, we can
 # Assign "Unknown" value to missing cabins
 
 full$Cabin[full$Cabin == ""] <- "Unknown"
-train$Cabin[train$Cabin == ""] <- "Unknown"
-test$Cabin[test$Cabin == ""] <- "Unknown"
 ```
 
-* **Age**: Variable `Age` has a relative high percentage of missings. 
+* **Embarked**: There were three possible ports of embarkation, **Cherbourg**, **Queenstown**, and **Southampton**.
 
+![](./images/Titanic_embark.png "Titanic embark")
 
+Because there are only 2 observations with a missing `Embarked`, we could **impute the most common embarkation point** to them.
+
+```{r}
+# Get observations with missing Embarked variable
+
+filter(full, Embarked=="")
+
+# Check most common embarkation point
+
+summary(full$Embarked)
+```
+
+Both observations are 1st class passengers with the **same ticket**. From the summary we know that the most common embarkation point is **Southampton** (**~70%** of passengers), so we impute it to the two observations.
+
+```{r}
+# Impute most common embarked point to observations with missing Embarked variable
+
+full$Embarked[full$Embarked == ""] <- "S"  
+```
+
+* **Fare**: With only one observation with missing `Fare`, we can follow the same approach as the `Embarked` case, but this time we will consider more variables for the imputation. Instead of directly impute the average fare, we will use the **median fare for the tickets with the same class and embarked point** than the one we are dealing with. This is because probably the fare of a ticket is mostly influenced by the class and the embarked point.
+
+```{r}
+# Get observations with missing Fare variable
+
+filter(full, is.na(Fare))
+```
+
+The passenger has a **3rd class** ticket from **Southampton**. We get the median fare for 3rd class tickets from Southampton and assign it to the observation.
+
+```{r}
+# Median fare by class and embarked point
+
+full %>% 
+    group_by(Pclass, Embarked) %>%
+    summarise(count = n(), median_fare = median(Fare, na.rm=TRUE))
+```
+
+```{r results = 'hide', message = FALSE, warning = FALSE}
+# Assign median fare by class and embarked point to observations with missing fare
+
+full %>% 
+    group_by(Pclass, Embarked) %>%
+    mutate(Fare = ifelse(is.na(Fare), round(median(Fare, na.rm = TRUE), 4), Fare))
+```
+
+* **Age**: Variable `Age` has a relative high percentage of missings. One common way to deal with missing nominal variables is to **asign the average value to the missings**. This is a simple approach, but it's only recommended for variables that aren't really important, and probably in our case `Age` is one of the most important variables. 
+
+A more complex approach is to **use a regression or another model to predict the missings**. We can apply this approach by using the [MICE package](https://datascienceplus.com/imputing-missing-data-with-r-mice-package/).
+
+```{r results = 'hide', message = FALSE, warning = FALSE}
+# Get Predictor-Matrix
+init = mice(full, maxit=0) 
+predM = init$predictorMatrix
+
+# Filter what columns not to use to impute the values
+predM[, c("PassengerId", "Name","Ticket","Cabin")]=0    
+imp <- mice(full, m=5, predictorMatrix = predM)
+
+# Get set with imputed age values filled
+full <- complete(imp)
+```
 
 ## 2.3. Describing data <a name="describing_data"></a> ##
 
