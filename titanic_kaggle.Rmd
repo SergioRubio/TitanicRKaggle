@@ -221,6 +221,40 @@ test <- factorize(test, columns_to_factor)
 summary(full)
 ```
 
+From the summary of the dataset we can see that there are several observations with **missing variables** `Age`, `Fare` and/or `Embarked`. Note that the 418 NA's of the `Survived` variable are from our test set.
+
+Character variables (`Name`, `Ticket` and `Cabin`) might be missing as well and we wouldn't see it from the summary, because the character representation of a missing value is the **empty character** ("").
+
+```{r}
+# Count missing values by variable
+
+colSums(is.na(full) | full=='')
+```
+
+We can plot missing values to show the **missing percentage** over the total number of observations.
+
+```{r}
+# Bar plot showing % of missing values by variable
+
+data.frame(Perc = (colSums(is.na(full) | full=='')/dim(full)[1])*100, Var = names(full)) %>%
+    filter(Perc > 0) %>%
+    ggplot(aes(x=reorder(Var, -Perc), y = Perc)) +
+    theme_classic() +
+    geom_bar(stat='identity', fill="#F8766D") + 
+    geom_text(aes(label=paste(round(Perc, 2), "%")), vjust=0) + 
+    labs(x='Variable', y='% missing', title='Missing values by variable')
+```
+
+When dealing with missing data it is important to **understand why they are missing**, when possible. Let's see each case in detail.
+
+* **Cabin**: Titanic cabins were divided by passenger's class. Cabins **A-D** were assigned for the **1st class**, **E** for the **2nd class** and **F** for the **3rd class**. Cabin **T** was also a **1st class** cabin.
+
+![](./images/Titanic_cabins.png "Titanic cabins")
+
+
+
+
+
 ## 2.3. Describing data <a name="describing_data"></a> ##
 
 
