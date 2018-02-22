@@ -2,7 +2,7 @@
 title: "Titanic Kaggle"
 author: "Sergio Rubio"
 date: "February 16, 2018"
-output: html_document
+output: "github_document"
 ---
 
 
