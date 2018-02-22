@@ -2,12 +2,8 @@
 title: "Titanic Kaggle"
 author: "Sergio Rubio"
 date: "February 16, 2018"
-output: "github_document"
+output: "html_document"
 ---
-
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
 
 # Table of contents #
 
@@ -239,7 +235,7 @@ data.frame(Perc = (colSums(is.na(full) | full=='')/dim(full)[1])*100, Var = name
     filter(Perc > 0) %>%
     ggplot(aes(x=reorder(Var, -Perc), y = Perc)) +
     theme_classic() +
-    geom_bar(stat='identity', fill="#F8766D") + 
+    geom_bar(stat='identity', width=0.75, fill="#F8766D") + 
     geom_text(aes(label=paste(round(Perc, 2), "%")), vjust=-0.5) + 
     labs(x='Variable', y='% missing', title='Missing values by variable')
 ```
@@ -354,7 +350,7 @@ We use the subset of train data from our full set because we need `Survived` inf
 
 ggplot(full_tr, aes(x = Survived)) +
     theme_classic() +
-    geom_bar() +
+    geom_bar(width = 0.75) +
     geom_text(stat='count',aes(label=paste(..count..," (",(round((..count../sum(..count..))*100, 2)), "%)"),vjust=-0.5)) + 
     labs(x='Survived', y='Passengers', title='Titanic survival rate')
 ```
@@ -363,7 +359,19 @@ Only **342 passengers of the 891** from the trainning set survived, a **38.38%**
 
 ### Hypothesis ###
 
+Before we start looking for relationships in the data, we should **formulate some hypothesis**.
 
+[_Women and children first_](https://en.wikipedia.org/wiki/Women_and_children_first) is a code of conduct famously associated with the sinking of Titanic, where  survival resources such as **lifeboats were limited**.
+
+![](./images/Titanic_lifeboat.png "Titanic lifeboat")
+
+Another common hypothesis is that **rich passengers survival rate is higher than poor passengers**. A possible explanation for this is the **cabins location**; 1st class cabins were at the top level while 3rd class were at the bottom, making it hard to reach the lifeboats.
+
+We can start then with the following hypothesis:
+
+# **Women survival rate is higher than men**.
+# **Children and young passengers survival rate is higher than adults**.
+# **Rich passengers survival rate is higher than poor passengers**.
 
 ### Relationship ###
 
