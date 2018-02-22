@@ -381,7 +381,7 @@ We can start then with the following hypothesis:
 surv_sex <- ggplot(full_tr, aes(x=Sex, fill=Survived)) +
     theme_classic() +
     geom_bar(stat='count', width=0.75, position='fill') +
-    labs(x='Sex', y='Survival rate', title='Titanic survival rate') +
+    labs(x='Sex', y='Survival rate', title='Titanic survival rate by sex/class') +
     guides(fill=FALSE)
 
 # Bar plot survival rate by passenger class
@@ -417,6 +417,34 @@ ggplot(full_tr) +
     geom_freqpoly(aes(x = Fare, color = Survived), binwidth = 0.05) +
     scale_x_log10() +
     labs(x='Fare', y='Passengers', title='Titanic survival rate by fare (log10)')
+```
+
+```{r message = FALSE, warning = FALSE}
+# Bar plot survival rate by SibSp
+
+surv_sibsp <- ggplot(full_tr, aes(x=SibSp, fill=Survived)) +
+    theme_classic() +
+    geom_bar(stat='count', width=0.75, position='fill') +
+    labs(x='SibSp', y='Survival rate', title='Titanic survival rate by SibSp/Parch') +
+    guides(fill=FALSE)
+
+# Bar plot survival rate by Parch
+
+surv_parch <- ggplot(full_tr, aes(x=Parch, fill=Survived)) +
+    theme_classic() +
+    geom_bar(stat='count', width=0.75, position='fill') +
+    labs(x='Parch', y='', title='')
+
+Rmisc::multiplot(surv_sibsp, surv_parch, cols=2)
+```
+
+```{r message = FALSE, warning = FALSE}
+# Bar plot survival rate by embarked point
+
+ggplot(full_tr, aes(x=Embarked, fill=Survived)) +
+    theme_classic() +
+    geom_bar(stat='count', width=0.75, position='fill') +
+    labs(x='Embarked', y='Survival rate', title='Titanic survival rate by embarked point')
 ```
 
 # 3. Data preparation <a name="data_preparation"></a> #
