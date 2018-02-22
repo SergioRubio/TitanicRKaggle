@@ -237,7 +237,7 @@ data.frame(Perc = (colSums(is.na(full) | full=='')/dim(full)[1])*100, Var = name
     ggplot(aes(x=reorder(Var, -Perc), y = Perc)) +
     theme_classic() +
     geom_bar(stat='identity', fill="#F8766D") + 
-    geom_text(aes(label=paste(round(Perc, 2), "%")), vjust=0) + 
+    geom_text(aes(label=paste(round(Perc, 2), "%")), vjust=-0.5) + 
     labs(x='Variable', y='% missing', title='Missing values by variable')
 ```
 
@@ -276,7 +276,11 @@ Both observations are 1st class passengers with the **same ticket**. From the su
 ```{r}
 # Impute most common embarked point to observations with missing Embarked variable
 
-full$Embarked[full$Embarked == ""] <- "S"  
+full$Embarked[full$Embarked == ""] <- "S" 
+
+# Drop empty levels
+
+full$Embarked <- factor(full$Embarked)
 ```
 
 * **Fare**: With only one observation with missing `Fare`, we can follow the same approach as the `Embarked` case, but this time we will consider more variables for the imputation. Instead of directly impute the average fare, we will use the **median fare for the tickets with the same class and embarked point** than the one we are dealing with. This is because probably the fare of a ticket is mostly influenced by the class and the embarked point.
@@ -300,9 +304,9 @@ full %>%
 ```{r results = 'hide', message = FALSE, warning = FALSE}
 # Assign median fare by class and embarked point to observations with missing fare
 
-full %>% 
-    group_by(Pclass, Embarked) %>%
-    mutate(Fare = ifelse(is.na(Fare), round(median(Fare, na.rm = TRUE), 4), Fare))
+full <- full %>% 
+            group_by(Pclass, Embarked) %>%
+            mutate(Fare = ifelse(is.na(Fare), round(median(Fare, na.rm = TRUE), 4), Fare))
 ```
 
 * **Age**: Variable `Age` has a relative high percentage of missings. One common way to deal with missing nominal variables is to **asign the average value to the missings**. This is a simple approach, but it's only recommended for variables that aren't really important, and probably in our case `Age` is one of the most important variables. 
@@ -311,22 +315,54 @@ A more complex approach is to **use a regression or another model to predict the
 
 ```{r results = 'hide', message = FALSE, warning = FALSE}
 # Get Predictor-Matrix
-init = mice(full, maxit=0) 
+init = mice(full, maxit=0, print=FALSE) 
 predM = init$predictorMatrix
 
 # Filter what columns not to use to impute the values
 predM[, c("PassengerId", "Name","Ticket","Cabin")]=0    
-imp <- mice(full, m=5, predictorMatrix = predM)
+imp <- mice(full, m=5, predictorMatrix = predM, print=FALSE)
 
 # Get set with imputed age values filled
-full <- complete(imp)
+full_imp <- complete(imp)
+```
+
+```{r}
+# Keep original Survived column and remove temporal full_imp set
+
+full_imp$Survived <- full$Survived
+full <- full_imp
+rm(full_imp)
 ```
 
 ## 2.3. Describing data <a name="describing_data"></a> ##
 
+In this section we will **look at the data** in as many different ways as possible. This is called [Exploratory Data Analysis (EDA)](https://en.wikipedia.org/wiki/Exploratory_data_analysis), and it's an approach to **summarize the main characteristics of the dataset**, often with visual methods.
+
+```{r}
+# Subset of full set containing only train data
+
+full_tr <- filter(full, Set=="train")
+```
+
+We use the subset of train data from our full set because we need `Survived` informed and we want to **keep the imputations of missings** from the previous section.
+
+```{r}
+# Bar plot of the general survival rate
+
+ggplot(full_tr, aes(x = Survived)) +
+    theme_classic() +
+    geom_bar() +
+    geom_text(stat='count',aes(label=paste(..count..," (",(round((..count../sum(..count..))*100, 2)), "%)"),vjust=-0.5)) + 
+    labs(x='Survived', y='Passengers', title='Survival rate')
+```
+
+Only **342 passengers of the 891** from the trainning set survived, a **38.38%** rate.
+
+### Hypothesis ###
 
 
 
+### Relationship ###
 
 
 # 3. Data preparation <a name="data_preparation"></a> #
