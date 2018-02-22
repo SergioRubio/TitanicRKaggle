@@ -20,6 +20,8 @@ output: "html_document"
     3. [Describing data](#describing_data)
     
 3. [Data preparation](#data_preparation)
+    1. [Feature engineering](#feature_engineering)
+    2. [Correlation](#correlation)
 
 4. [Modeling](#modeling)
 
@@ -448,6 +450,12 @@ ggplot(full_tr, aes(x=Embarked, fill=Survived)) +
 ```
 
 # 3. Data preparation <a name="data_preparation"></a> #
+
+## 3.1. Feature engineering <a name="feature_engineering"></a> ##
+
+
+## 3.2. Correlation <a name="correlation"></a> ##
+
 
 # 4. Modeling <a name="modeling"></a> #
 
