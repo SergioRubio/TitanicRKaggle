@@ -345,13 +345,13 @@ full_tr <- filter(full, Set=="train")
 
 We use the subset of train data from our full set because we need `Survived` informed and we want to **keep the imputations of missings** from the previous section.
 
-```{r}
+```{r message = FALSE, warning = FALSE}
 # Bar plot of the general survival rate
 
 ggplot(full_tr, aes(x = Survived)) +
     theme_classic() +
     geom_bar(width = 0.75) +
-    geom_text(stat='count',aes(label=paste(..count..," (",(round((..count../sum(..count..))*100, 2)), "%)"),vjust=-0.5)) + 
+    geom_text(stat='count', aes(label=paste(..count..," (",(round((..count../sum(..count..))*100, 2)), "%)"),vjust=-0.5)) + 
     labs(x='Survived', y='Passengers', title='Titanic survival rate')
 ```
 
@@ -369,12 +369,55 @@ Another common hypothesis is that **rich passengers survival rate is higher than
 
 We can start then with the following hypothesis:
 
-# **Women survival rate is higher than men**.
-# **Children and young passengers survival rate is higher than adults**.
-# **Rich passengers survival rate is higher than poor passengers**.
+* **Women survival rate is higher than men**.
+* **Children and young passengers survival rate is higher than adults**.
+* **Rich passengers survival rate is higher than poor passengers**.
 
-### Relationship ###
+### Relationships ###
 
+```{r message = FALSE, warning = FALSE}
+# Bar plot survival rate by sex
+
+surv_sex <- ggplot(full_tr, aes(x=Sex, fill=Survived)) +
+    theme_classic() +
+    geom_bar(stat='count', width=0.75, position='fill') +
+    labs(x='Sex', y='Survival rate', title='Titanic survival rate') +
+    guides(fill=FALSE)
+
+# Bar plot survival rate by passenger class
+
+surv_class <- ggplot(full_tr, aes(x=Pclass, fill=Survived)) +
+    theme_classic() +
+    geom_bar(stat='count', width=0.75, position='fill') +
+    labs(x='Class', y='', title='')
+
+Rmisc::multiplot(surv_sex, surv_class, cols=2)
+```
+
+```{r message = FALSE, warning = FALSE}
+# Bar plot survival rate by sex and passenger class
+
+ggplot(full_tr, aes(x=Sex, fill=Survived)) +
+    theme_classic() +
+    geom_bar(stat='count', width=0.75, position='fill') +
+    facet_wrap(~Pclass) +
+    labs(x='Sex', y='Survival rate', title='Titanic survival rate by sex and class')
+```
+
+```{r message = FALSE, warning = FALSE}
+ggplot(full_tr) +
+    theme_classic() +
+    geom_freqpoly(aes(x = Age, color = Survived), binwidth = 1) +
+    labs(x='Age', y='Passengers', title='Titanic survival rate by age')
+```
+
+```{r message = FALSE, warning = FALSE}
+ggplot(full_tr) +
+    theme_classic() +
+    geom_freqpoly(aes(x = Fare, color = Survived), binwidth = 0.05) +
+    scale_x_log10() +
+    labs(x='Fare', y='Passengers', title='Titanic survival rate by fare (log10)')
+```
 
 # 3. Data preparation <a name="data_preparation"></a> #
 
