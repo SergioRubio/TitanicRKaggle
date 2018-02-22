@@ -5,6 +5,9 @@ date: "February 16, 2018"
 output: "github_document"
 ---
 
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
 
 # Table of contents #
 
@@ -353,7 +356,7 @@ ggplot(full_tr, aes(x = Survived)) +
     theme_classic() +
     geom_bar() +
     geom_text(stat='count',aes(label=paste(..count..," (",(round((..count../sum(..count..))*100, 2)), "%)"),vjust=-0.5)) + 
-    labs(x='Survived', y='Passengers', title='Survival rate')
+    labs(x='Survived', y='Passengers', title='Titanic survival rate')
 ```
 
 Only **342 passengers of the 891** from the trainning set survived, a **38.38%** rate.
