@@ -451,7 +451,23 @@ ggplot(full_tr, aes(x=Embarked, fill=Survived)) +
 
 # 3. Data preparation <a name="data_preparation"></a> #
 
+In this section we prepare our dataset for the model process.
+
 ## 3.1. Feature engineering <a name="feature_engineering"></a> ##
+
+One way to improve the results of a machine learning algorithm is to create additional relevant features from the existing features in the data. This process is called [feature engineering](https://en.wikipedia.org/wiki/Feature_engineering).
+
+### Titles ###
+
+
+### Age ###
+
+
+### Family ###
+
+
+### Tickets ###
+
 
 
 ## 3.2. Correlation <a name="correlation"></a> ##
