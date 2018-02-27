@@ -491,12 +491,12 @@ As we can see, Mr, Miss and Mrs are taking more than **93%** of the values, Mast
 # Replace less frequent titles with more frequent ones
 
 full <- full %>%
-    mutate(Title = case_when(
+    mutate(Title = factor(case_when(
         Title %in% c("Mlle","Ms","Lady","Dona") ~ "Miss",
         Title == 'Mme' ~ 'Mrs',
         Title %in% c('Capt','Col','Major','Dr','Rev','Don','Sir','the Countess','Jonkheer') ~ 'Officer',
         TRUE ~ Title
-    ))
+    )))
 ```
 
 Let's check the survival rate by our new `Title` feature.
@@ -543,7 +543,7 @@ ggplot(filter(full, Set=='train'), aes(x=Age_group, fill=Survived)) +
 From `SibSp` and `Parch` variables we can derive the **number of family members** for each passenger.
 
 ```{r}
-# Add family size and type features
+# Add family size and family type features
 
 full$Family_size <- full$SibSp + full$Parch + 1
 
@@ -555,7 +555,7 @@ full <- full %>%
     )))
 ```
 
-We can now check the survival rate by family size
+We can now check the survival rate by family size.
 
 ```{r message = FALSE, warning = FALSE}
 # Bar plot survival rate by passenger family size
@@ -568,6 +568,48 @@ ggplot(filter(full, Set=='train'), aes(x=Family_type, fill=Survived)) +
 
 ### Ticket ###
 
+Checking the ticket variable we can see that some passengers **shared the same ticket number**.
+
+```{r}
+# Summary of tickets by number of passengers
+
+full %>%
+    group_by(Ticket) %>%
+    summarise(Count = n()) %>%
+    group_by(Count) %>%
+    summarise(Count_size = n()) %>%
+    mutate(Freq_size = round(Count_size/sum(Count_size),2)) %>%
+    arrange(desc(Count_size))
+```
+
+This summary shows that only **77% of the tickets belonged to one single passenger**, 14% were shared by two passengers, 5% by 3, etc.
+
+We will replicate the approach of the `Family_size` variable adding the `Ticket_size` feature.
+
+```{r}
+# Add ticket size and ticket type features
+
+full <- full %>%
+    group_by(Ticket) %>%
+    summarise(Ticket_size = n()) %>%
+    inner_join(full, by='Ticket') %>%
+    mutate(Ticket_type = factor(case_when(
+        Ticket_size == 1 ~ 'Single',
+        Ticket_size >= 2 & Ticket_size <= 4 ~ 'Small',
+        Ticket_size >= 5 ~ 'Big'
+    )))
+
+```
+
+Let's check the survival rate by the new `Ticket_type` feature.
+
+```{r}
+# Bar plot survival rate by passenger family size
+ggplot(filter(full, Set=='train'), aes(x=Ticket_type, fill=Survived)) + 
+    theme_classic() +
+    geom_bar(stat='count', width=0.75, position='fill') +
+    labs(x='Ticket size', y='Survival rate', title='Titanic survival rate by ticket size')
+```
 
 
 ## 3.2. Correlation <a name="correlation"></a> ##
