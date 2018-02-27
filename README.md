@@ -20,6 +20,8 @@ output: "html_document"
     3. [Describing data](#describing_data)
     
 3. [Data preparation](#data_preparation)
+    1. [Feature engineering](#feature_engineering)
+    2. [Correlation](#correlation)
 
 4. [Modeling](#modeling)
 
@@ -381,7 +383,7 @@ We can start then with the following hypothesis:
 surv_sex <- ggplot(full_tr, aes(x=Sex, fill=Survived)) +
     theme_classic() +
     geom_bar(stat='count', width=0.75, position='fill') +
-    labs(x='Sex', y='Survival rate', title='Titanic survival rate') +
+    labs(x='Sex', y='Survival rate', title='Titanic survival rate by sex/class') +
     guides(fill=FALSE)
 
 # Bar plot survival rate by passenger class
@@ -419,7 +421,108 @@ ggplot(full_tr) +
     labs(x='Fare', y='Passengers', title='Titanic survival rate by fare (log10)')
 ```
 
+```{r message = FALSE, warning = FALSE}
+# Bar plot survival rate by SibSp
+
+surv_sibsp <- ggplot(full_tr, aes(x=SibSp, fill=Survived)) +
+    theme_classic() +
+    geom_bar(stat='count', width=0.75, position='fill') +
+    labs(x='SibSp', y='Survival rate', title='Titanic survival rate by SibSp/Parch') +
+    guides(fill=FALSE)
+
+# Bar plot survival rate by Parch
+
+surv_parch <- ggplot(full_tr, aes(x=Parch, fill=Survived)) +
+    theme_classic() +
+    geom_bar(stat='count', width=0.75, position='fill') +
+    labs(x='Parch', y='', title='')
+
+Rmisc::multiplot(surv_sibsp, surv_parch, cols=2)
+```
+
+```{r message = FALSE, warning = FALSE}
+# Bar plot survival rate by embarked point
+
+ggplot(full_tr, aes(x=Embarked, fill=Survived)) +
+    theme_classic() +
+    geom_bar(stat='count', width=0.75, position='fill') +
+    labs(x='Embarked', y='Survival rate', title='Titanic survival rate by embarked point')
+```
+
 # 3. Data preparation <a name="data_preparation"></a> #
+
+In this section we prepare our dataset for the modelling step, **adding or removing features** (variables).
+
+## 3.1. Feature engineering <a name="feature_engineering"></a> ##
+
+One way to improve the results of a machine learning algorithm is to **create additional relevant features** from the existing features in the data. This process is called [feature engineering](https://en.wikipedia.org/wiki/Feature_engineering).
+
+### Title ###
+
+If we take a look to the name variable we can see that it contains the **title of the passenger** (Mr., Mrs, etc.).
+
+```{r}
+# Top observations of Name variable
+
+head(full$Name)
+```
+
+That could be relevant information, we can create the `Title` feature from the name.
+
+```{r}
+# Create Title feature from the Name variable
+
+full <- full %>%
+    mutate(Title = sub("^.*, (.*?)\\..*$", "\\1", Name))
+
+
+# Count passengers by Title
+
+full %>% 
+    group_by(Title) %>% 
+    summarise(Count = n()) %>% 
+    mutate(Freq = round(Count/sum(Count),2)) %>%
+    arrange(desc(Count))
+```
+
+As we can see, Mr, Miss and Mrs are taking more than **93%** of the values, Master the **5%** and the rest the remaining **2%**. We group this last remaining group to other titles.
+
+```{r}
+# Replace less frequent titles with more frequent ones
+
+full <- full %>%
+    mutate(Title = case_when(
+        Title %in% c("Mlle","Ms","Lady","Dona") ~ "Miss",
+        Title == 'Mme' ~ 'Mrs',
+        Title %in% c('Capt','Col','Major','Dr','Rev','Don','Sir','the Countess','Jonkheer') ~ 'Officer',
+        TRUE ~ Title
+    ))
+```
+
+Let's check the survival rate by our new `Title` feature.
+
+```{r message = FALSE, warning = FALSE}
+# Bar plot survival rate by passenger title
+
+ggplot(filter(full, Set=='train'), aes(x=Title, fill=Survived)) +
+    theme_classic() +
+    geom_bar(stat='count', width=0.75, position='fill') +
+    labs(x='Title', y='Survival rate', title='Titanic survival rate by passenger title')
+```
+
+
+### Age ###
+
+
+### Family ###
+
+
+### Ticket ###
+
+
+
+## 3.2. Correlation <a name="correlation"></a> ##
+
 
 # 4. Modeling <a name="modeling"></a> #
 
