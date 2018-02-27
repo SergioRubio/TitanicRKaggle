@@ -519,13 +519,12 @@ From the age variable we can create a **group age feature** that could be more u
 # Add age group feature
 
 full <- full %>%
-    mutate(Age_group = case_when(
-        Age < 10 ~ "< 10 years",
-        Age >= 10 & Age <= 18 ~ "10-18 years",
-        Age >= 19 & Age <= 60 ~ "19-60 years",
-        Age > 60 ~ "> 60 years",
-        TRUE ~ "Error"
-    ))
+    mutate(Age_group = factor(case_when(
+        Age < 10 ~ '< 10 years',
+        Age >= 10 & Age <= 18 ~ '10-18 years',
+        Age >= 19 & Age <= 60 ~ '19-60 years',
+        Age > 60 ~ '> 60 years'
+    )))
 ```
 
 We check the survival rate by age group.
@@ -536,11 +535,36 @@ We check the survival rate by age group.
 ggplot(filter(full, Set=='train'), aes(x=Age_group, fill=Survived)) +
     theme_classic() +
     geom_bar(stat='count', width=0.75, position='fill') +
-    labs(x='Age_group', y='Survival rate', title='Titanic survival rate by passenger age group')
+    labs(x='Age group', y='Survival rate', title='Titanic survival rate by passenger age group')
 ```
 
 ### Family ###
 
+From `SibSp` and `Parch` variables we can derive the **number of family members** for each passenger.
+
+```{r}
+# Add family size and type features
+
+full$Family_size <- full$SibSp + full$Parch + 1
+
+full <- full %>%
+    mutate(Family_type = factor(case_when(
+        Family_size == 1 ~ 'Single',
+        Family_size >= 2 & Family_size <= 4 ~ 'Small',
+        Family_size >= 5 ~ 'Big'
+    )))
+```
+
+We can now check the survival rate by family size
+
+```{r message = FALSE, warning = FALSE}
+# Bar plot survival rate by passenger family size
+
+ggplot(filter(full, Set=='train'), aes(x=Family_type, fill=Survived)) +
+    theme_classic() +
+    geom_bar(stat='count', width=0.75, position='fill') +
+    labs(x='Family size', y='Survival rate', title='Titanic survival rate by family size')
+```
 
 ### Ticket ###
 
