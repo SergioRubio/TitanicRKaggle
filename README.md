@@ -513,6 +513,31 @@ ggplot(filter(full, Set=='train'), aes(x=Title, fill=Survived)) +
 
 ### Age ###
 
+From the age variable we can create a **group age feature** that could be more useful than the raw age value.
+
+```{r}
+# Add age group feature
+
+full <- full %>%
+    mutate(Age_group = case_when(
+        Age < 10 ~ "< 10 years",
+        Age >= 10 & Age <= 18 ~ "10-18 years",
+        Age >= 19 & Age <= 60 ~ "19-60 years",
+        Age > 60 ~ "> 60 years",
+        TRUE ~ "Error"
+    ))
+```
+
+We check the survival rate by age group.
+
+```{r message = FALSE, warning = FALSE}
+# Bar plot survival rate by passenger age group
+
+ggplot(filter(full, Set=='train'), aes(x=Age_group, fill=Survived)) +
+    theme_classic() +
+    geom_bar(stat='count', width=0.75, position='fill') +
+    labs(x='Age_group', y='Survival rate', title='Titanic survival rate by passenger age group')
+```
 
 ### Family ###
 
