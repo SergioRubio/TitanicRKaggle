@@ -141,6 +141,8 @@ We need to use several **R packages** for data manipulation, visualization, mode
 library('dplyr') # Data manipulation
 library('ggplot2') # Visualization
 library('mice') # Missing values
+library('forcats') # Working with factors
+library('corrplot') # Correlation matrix
 ```
     
 # 2. Data understanding <a name="data_understanding"></a> #
@@ -616,6 +618,27 @@ ggplot(filter(full, Set=='train'), aes(x=Ticket_type, fill=Survived)) +
 
 ## 3.2. Correlation <a name="correlation"></a> ##
 
+It is common that in a dataset some of the variables are related. Sometimes, the connection between some variables is **strongly enough so that one of them is superflous**. 
+
+The best way to check if our variables are correlated among each other is visualising the **correlation matrix**.
+
+```{r}
+# Correlation matrix of the variables
+
+filter(full, Set=='train') %>%
+    select(-PassengerId, -Name, -Cabin, -Ticket, -Set, -Family_size) %>%
+    mutate(Sex = fct_recode(Sex,'0'='male', '1'='female')) %>%
+    mutate(Sex = as.integer(Sex),
+           Pclass = as.integer(Pclass),
+           Survived = as.integer(Survived),
+           Title = as.integer(Title),
+           Age_group = as.integer(Age_group),
+           Family_type = as.integer(Family_type),
+           Ticket_type = as.integer(Ticket_type),
+           Embarked = as.integer(Embarked)) %>%
+    cor(use="complete.obs") %>%
+    corrplot(type="lower", diag=FALSE)
+```
 
 
 # 4. Modeling <a name="modeling"></a> #
