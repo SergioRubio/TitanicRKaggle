@@ -520,10 +520,12 @@ From the age variable we can create a **group age feature** that could be more u
 
 full <- full %>%
     mutate(Age_group = factor(case_when(
-        Age < 10 ~ '< 10 years',
-        Age >= 10 & Age <= 18 ~ '10-18 years',
-        Age >= 19 & Age <= 60 ~ '19-60 years',
-        Age > 60 ~ '> 60 years'
+        Age < 5 ~ 'Infant',
+        Age >= 5 & Age < 12 ~ 'Child',
+        Age >= 12 & Age < 18 ~ 'Teenager',
+        Age >= 18 & Age < 35 ~ 'Young adult',
+        Age >= 35 & Age < 60 ~ 'Adult',
+        Age >= 60 ~ 'Senior'
     )))
 ```
 
@@ -613,6 +615,7 @@ ggplot(filter(full, Set=='train'), aes(x=Ticket_type, fill=Survived)) +
 
 
 ## 3.2. Correlation <a name="correlation"></a> ##
+
 
 
 # 4. Modeling <a name="modeling"></a> #
