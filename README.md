@@ -640,6 +640,15 @@ filter(full, Set=='train') %>%
     corrplot(type="lower", diag=FALSE)
 ```
 
+A correlation plot shows the correlation between each variable with colour circles. The **size and shading depends on the absolute values of the coefficients** and the **colour depends on direction (positive or negative correlation)**. 
+
+From our correlation matrix we can see, among others, the following relations:
+
+* `Survived` relates to `Pclass`, `Sex`, `Fare`, `Family_type` and `Ticket_type`.
+* `Pclass` relates to `Age`, `Fare` and `Ticket_type`.
+* `Age` relates to `Title` and `Age_group`.
+* `Family_type` relates to `Ticket_type`.
+
 
 # 4. Modeling <a name="modeling"></a> #
 
