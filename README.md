@@ -651,6 +651,23 @@ From our correlation matrix we can see, among others, the following relations:
 
 
 # 4. Modeling <a name="modeling"></a> #
+In this section we start using machine learning algorithms to model. 
+
+## 4.1. Decision tree <a name="decision_tree"></a> ##
+
+```{r}
+set.seed(1234)
+
+fit <- rpart(Survived ~ Pclass + Sex + Age + SibSp + Parch + Fare + Embarked,
+               data=full,
+               method="class")
+
+rpart.plot(fit, extra = 3, fallen.leaves = T)
+```
+
+
+## 4.2. Random forest <a name="random_forest"></a> ##
+
 
 # 5. Evaluation <a name="evaluation"></a> #
 
